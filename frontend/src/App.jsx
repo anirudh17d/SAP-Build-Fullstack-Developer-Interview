@@ -68,7 +68,7 @@ function App() {
         textAlign: "center",
       }}
     >
-      { /*<img src={sapLogo} alt="SAP Logo" style={{ height: "140px" }} /> */ }
+      {<img src={sapLogo} alt="SAP Logo" style={{ height: "140px" }} />}
 
       <h1 style={{ fontSize: "2.4rem", margin: 0 }}>
         Hello from Anirudh’s Full Stack Cloud Developer Interview 🚀
