@@ -14,6 +14,6 @@ afterAll((done) => {
 describe("Backend smoke test", () => {
   it("GET / should return 200", async () => {
     const res = await request(server).get("/");
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(201);
   });
 });
