@@ -1,37 +1,54 @@
-name: Backend CI (Express smoke test)
+name: Backend CI
 
 on:
   push:
+    branches: [ "main" ]
     paths:
       - "backend/**"
       - ".github/workflows/backend-ci.yml"
   pull_request:
+    branches: [ "main" ]
     paths:
       - "backend/**"
 
 jobs:
-  test-backend:
+  backend-ci:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout code
       - name: Checkout
         uses: actions/checkout@v4
 
+      # 2. Setup Node.js
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
+      # 3. Install backend dependencies
       - name: Install deps
         working-directory: backend
-        run: npm install
+        run: npm ci
 
+      # 4. Lint check
+      - name: Run ESLint
+        working-directory: backend
+        run: npm run lint
+
+      # 5. Run backend tests
+      - name: Run tests
+        working-directory: backend
+        run: npm test -- --watchAll=false
+
+      # 6. Start backend in background
       - name: Start server in background
         working-directory: backend
         run: |
-          node server.js & 
+          node server.js &
           echo $! > server.pid
 
+      # 7. Wait until server is ready
       - name: Wait for server
         run: |
           for i in {1..30}; do
@@ -45,12 +62,15 @@ jobs:
           echo "Server did not start in time" >&2
           exit 1
 
+      # 8. Hit root endpoint
       - name: Hit root endpoint
         run: curl -fsS http://localhost:3000/
 
+      # 9. Hit messages endpoint
       - name: Hit messages endpoint
         run: curl -fsS http://localhost:3000/api/messages
 
+      # 10. Stop backend server
       - name: Stop server
         if: always()
         working-directory: backend
