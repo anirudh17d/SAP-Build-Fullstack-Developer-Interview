@@ -1,5 +1,7 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import sapLogo from "./assets/sap-logo.png";
+// eslint-disable-next-line no-unused-vars
 import AnalogClock from "./AnalogClock";
 
 function App() {
