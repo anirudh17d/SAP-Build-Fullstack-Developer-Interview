@@ -1,0 +1,60 @@
+name: Backend CI (Express smoke test)
+
+on:
+  push:
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-ci.yml"
+  pull_request:
+    paths:
+      - "backend/**"
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install deps
+        working-directory: backend
+        run: npm install
+
+      - name: Start server in background
+        working-directory: backend
+        run: |
+          node server.js & 
+          echo $! > server.pid
+
+      - name: Wait for server
+        run: |
+          for i in {1..30}; do
+            if curl -fsS http://localhost:3000/ >/dev/null; then
+              echo "Server is up!"
+              exit 0
+            fi
+            echo "Waiting for server..."
+            sleep 1
+          done
+          echo "Server did not start in time" >&2
+          exit 1
+
+      - name: Hit root endpoint
+        run: curl -fsS http://localhost:3000/
+
+      - name: Hit messages endpoint
+        run: curl -fsS http://localhost:3000/api/messages
+
+      - name: Stop server
+        if: always()
+        working-directory: backend
+        run: |
+          if [ -f server.pid ]; then
+            kill $(cat server.pid) || true
+          fi
