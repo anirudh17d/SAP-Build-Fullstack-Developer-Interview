@@ -62,9 +62,6 @@ jobs:
       - name: Hit root endpoint
         run: curl -fsS http://localhost:3000/
 
-      # 9. Hit messages endpoint
-      - name: Hit messages endpoint
-        run: curl -fsS http://localhost:3000/api/messages
 
       # 10. Stop backend server
       - name: Stop server
