@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import sapLogo from "./assets/sap-logo.png";
 
 function App() {
   const [seconds, setSeconds] = useState(0);
@@ -30,7 +31,7 @@ function App() {
       }}
     >
       <img
-        src="/sap-logo.png"
+        src={sapLogo}
         alt="SAP Logo"
         style={{ height: "120px", marginBottom: "1rem" }}
       />
