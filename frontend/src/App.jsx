@@ -72,7 +72,7 @@ function App() {
       {<img src={sapLogo} alt="SAP Logo" style={{ height: "140px" }} />}
 
       <h1 style={{ fontSize: "2.4rem", margin: 0 }}>
-        Hello from Anirudh’s Full Stack Cloud Developer Interview 🚀
+       Today is a good day! 🚀
       </h1>
       <h2 style={{ fontWeight: "normal", margin: 0 }}>
         Building with React, Node.js, and CI/CD
